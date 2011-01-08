@@ -1,0 +1,192 @@
+<!--
+    index.tmpl
+        
+    Copyright 2011 Satanowski <satanowski@gmail.com>
+        
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+        
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+        
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+    MA 02110-1301, USA.
+-->
+
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="Author" content="satanowski" />
+        <meta name="Generator" content="vim" />
+        <title>Office Notifier</title>
+        <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lekton' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Covered+By+Your+Grace' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+        <style type="text/css">
+            body {
+                font-family: 'Lekton', arial, serif;
+                font-size:1.3em;
+                line-height:200%;
+                color:#F3F3F3;
+                width:1000px;
+                margin: 80px auto;
+                background-color:black;
+            }
+            
+            h1{
+                font-size:4em;
+                border-bottom:5px solid #7F7F7F;
+                padding-bottom:10px;
+                text-align:right;
+                font-family: 'Lobster', arial, serif;
+            }
+            
+            h2 {
+                font-family: 'Covered By Your Grace', arial, serif; 
+                font-size:1.7em;
+            }
+            
+            nav,#status {
+                background-color:#D3D3D3;
+                display:block;
+            }
+            
+            nav {
+                padding:0px;
+                height:50px;
+                border-bottom:10px solid #333333;
+            }
+            
+            nav ul li {
+                display:inline;
+            }
+            
+            nav ul li a{
+                text-decoration:none;
+                color:white;
+                font-family: 'Covered By Your Grace', arial, serif; 
+                font-size:2em;
+                margin-right:30px;
+                padding:5px;
+                height:40px;
+                display:block;
+                float:left;
+            }
+          
+            nav ul li a.sel{
+                color:white;
+                background-color:#333333;
+            }
+            
+            #box {
+                background-color:#333333;
+                padding:10px;
+                padding-left:20px;
+            }
+            
+            #box table {
+                width:100%;
+                margin:0px auto;
+            }
+            
+            #box h2 {
+                text-align:center;
+                font-size:3em;
+            }
+            
+            #box thead {
+                font-family: 'Covered By Your Grace', arial, serif; 
+            }
+            
+            #box td {
+                padding:2px;
+                background-color:#333333;
+            }
+            
+            #status {
+                display:block;
+                width:100%;
+                text-align:left;
+                font-family:'Ubuntu', arial, serif;
+                font-size:12px;
+                color:#333333;
+            }
+            
+            #status span {
+                padding-left:20px;
+            }
+            
+            footer {
+                border-top:1px solid #7F7F7F;
+                display:block;
+                margin:70px 0px; 
+                font-size:12px;
+                padding:0px;
+            }
+        </style>
+    </head>
+<body>
+
+<h1>Office notifier</h1>
+<nav>
+    <ul>
+        <li><a href="./users" {%if section == "users"%}class="sel"{% endif %}>Users</a></li>
+        <li><a href="./groups" {%if section == "groups"%}class="sel"{% endif %}>Groups</a></li>
+    </ul>
+</nav>
+<div id="box">
+    {% if section == "users" %}
+        <h2>User list</h2>
+        {% if users %}
+            <table>
+                <thead>
+                    <tr><td>Id</td><td>User name</td><td>phone number</td><td>IP address</td></tr>
+                </thead>                
+                <tbody>
+            {% for user in users %}
+                <tr><td>{{user.id}}</td><td>{{user.name}}</td><td>{{user.gsm[0:3]}} &#9839;&#9839;&#9839;&#9839;&#9839;&#9839;</td><td>{{user.ip[0:8]}} &#9839;&#9839;&#9839;&#9839;&#9839;&#9839;&#9839;&#9839;</td></tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+    
+    {% if section == "groups" %}
+        <h2>Group list</h2>
+        {% if groups %}
+            <table>
+                <thead>
+                <tr><td>Id</td><td>Group name</td><td>Members</td></tr>
+                </thead>
+                <tbody>
+            {% for group in groups %}
+                <tr><td>{{group.id}}</td><td>{{group.name}}</td><td>
+                {% for user in membership[group.id] %}
+                    {{user.name}}&nbsp;&nbsp;
+                {% endfor %}
+                </td></tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+    
+</div>
+<div id="status">
+        <span>Phone status: bla bla bla</span>
+</div>
+<footer>
+    Copyright 2011 Satanowski <satanowski@gmail.com>
+</footer>
+</body>
+</html>
