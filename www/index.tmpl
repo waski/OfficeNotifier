@@ -32,6 +32,7 @@
         <link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Covered+By+Your+Grace' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
         <style type="text/css">
             body {
                 font-family: 'Lekton', arial, serif;
@@ -63,7 +64,7 @@
             
             nav {
                 padding:0px;
-                height:50px;
+                height:60px;
                 border-bottom:10px solid #333333;
             }
             
@@ -75,10 +76,10 @@
                 text-decoration:none;
                 color:white;
                 font-family: 'Covered By Your Grace', arial, serif; 
-                font-size:2em;
+                font-size:2.3em;
                 margin-right:30px;
                 padding:5px;
-                height:40px;
+                height:50px;
                 display:block;
                 float:left;
             }
@@ -105,7 +106,8 @@
             }
             
             #box thead {
-                font-family: 'Covered By Your Grace', arial, serif; 
+                font-family:'Covered By Your Grace', arial, serif;
+                font-size:1.5em;
             }
             
             #box td {
@@ -124,6 +126,14 @@
             
             #status span {
                 padding-left:20px;
+                font-size:15px;
+                color:#7F7F7F;
+            }
+            
+            #status span#status_txt {
+                font-family: 'Inconsolata', arial, serif;
+                font-size:14px;
+                color:inherit;
             }
             
             footer {
@@ -140,21 +150,46 @@
 <h1>Office notifier</h1>
 <nav>
     <ul>
+        <li><a href="./home" {%if section == "home"%}class="sel"{% endif %}>Home</a></li>
         <li><a href="./users" {%if section == "users"%}class="sel"{% endif %}>Users</a></li>
         <li><a href="./groups" {%if section == "groups"%}class="sel"{% endif %}>Groups</a></li>
     </ul>
 </nav>
 <div id="box">
+    {% if section == "home" %}
+        {% if billings %}
+            <table>
+                <thead>
+                    <tr><td>Time</td><td>User</td><td>Message</td></tr>
+                </thead>                
+                <tbody>
+            {% for bill in billings %}
+                <tr><td>{{bill.time}}</td><td>{{bill.user.name}}</td><td>{{bill.sms}}</td></tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+    
     {% if section == "users" %}
-        <h2>User list</h2>
         {% if users %}
             <table>
                 <thead>
-                    <tr><td>Id</td><td>User name</td><td>phone number</td><td>IP address</td></tr>
+                    <tr>
+                        <td>Id</td>
+                        <td>User name</td>
+                        <td>phone number</td>
+                        <td>IP address</td>
+                    </tr>
                 </thead>                
                 <tbody>
             {% for user in users %}
-                <tr><td>{{user.id}}</td><td>{{user.name}}</td><td>{{user.gsm[0:3]}} &#9839;&#9839;&#9839;&#9839;&#9839;&#9839;</td><td>{{user.ip[0:8]}} &#9839;&#9839;&#9839;&#9839;&#9839;&#9839;&#9839;&#9839;</td></tr>
+                <tr>
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.gsm[0:3]}} &#9839;&#9839;&#9839;&nbsp;&#9839;&#9839;&#9839;</td>
+                    <td>{{user.ip[0:8]}}  &#9839;&#9839;&#9839;&#9839;&#9839;&#9839;&#9839;</td>
+                </tr>
             {% endfor %}
                 </tbody>
             </table>
@@ -162,7 +197,6 @@
     {% endif %}
     
     {% if section == "groups" %}
-        <h2>Group list</h2>
         {% if groups %}
             <table>
                 <thead>
@@ -183,7 +217,7 @@
     
 </div>
 <div id="status">
-        <span>Phone status: bla bla bla</span>
+        <span>Phone status:</span><span id="status_txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas laoreet suscipit nisl, et pretium dui.</span>
 </div>
 <footer>
     Copyright 2011 Satanowski <satanowski@gmail.com>

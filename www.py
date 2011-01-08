@@ -29,19 +29,22 @@ dao = DAO()
 
 class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
-        section = self.path.replace("/","").lower() or "users"
-        status, users, groups, membership = None, None, None, None
+        section = self.path.replace("/","").lower() or "home"
+        status, users, groups, membership, billings = None, None, None, None, None
         
         self.send_response(200)
         self.end_headers()
         
-        if section in ['users', 'groups', 'billings']:
+        if section == 'users':
             users = dao.getUsers()
+        elif section == 'groups':
             groups = dao.getGroups()
             membership = {}
-        
             for g in groups:
                 membership[g.id] = g.getUsers()
+        
+        elif section == 'home':
+            billings = dao.getBillings()
 
         # to-do: get phone status
         status = "bla bla bla"
@@ -50,6 +53,7 @@ class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             'section' : section,
             'users': users,
             'groups': groups,
+            'billings': billings,
             'membership' : membership,
             'status' : status,
         }
@@ -60,4 +64,3 @@ class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 server = BaseHTTPServer.HTTPServer(('',config.HTTP_PORT), WebRequestHandler)
 server.serve_forever()
-
