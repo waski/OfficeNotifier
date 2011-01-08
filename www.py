@@ -21,19 +21,32 @@ import config
 import BaseHTTPServer
 from jinja2 import Template
 from db import OfficeNotifierDAO as DAO, Group, User, Billing
-
+import re
 
 
 
 dao = DAO()
 
 class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    
+    known_sections = ["home","users","groups", "ie"]    
     def do_GET(self):
-        section = self.path.replace("/","").lower() or "home"
+        addr = re.findall("/(\w+)",self.path) or None
+        if not addr:
+            section = "home"
+        else:
+            section = addr[0].lower()
+            if not section in self.known_sections:
+                section = "home"
+        
         status, users, groups, membership, billings = None, None, None, None, None
         
         self.send_response(200)
         self.end_headers()
+        
+        if section == "ie":
+            self.wfile.write(file('www/ie.html').read().decode('UTF-8'))
+            return
         
         if section == 'users':
             users = dao.getUsers()

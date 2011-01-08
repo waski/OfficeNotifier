@@ -19,7 +19,6 @@
     MA 02110-1301, USA.
 -->
 
-
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -111,8 +110,15 @@
             }
             
             #box td {
-                padding:2px;
+                padding-right:10px;
+                padding-left:10px;
                 background-color:#333333;
+                vertical-align:top;
+            }
+            
+            #box td.sms, td.time {
+                font-size:14px;
+                line-height:110%;
             }
             
             #status {
@@ -144,6 +150,14 @@
                 padding:0px;
             }
         </style>
+        <script>
+            <!--
+            if (navigator.appName == "Microsoft Internet Explorer") {
+                document.location = "./ie.html"; 
+            }
+            // -->
+        </script>
+
     </head>
 <body>
 
@@ -164,7 +178,7 @@
                 </thead>                
                 <tbody>
             {% for bill in billings %}
-                <tr><td>{{bill.time}}</td><td>{{bill.user.name}}</td><td>{{bill.sms}}</td></tr>
+                <tr><td class="time">{{bill.time}}</td><td>{{bill.user.name}}</td><td class="sms">{{bill.sms}}</td></tr>
             {% endfor %}
                 </tbody>
             </table>
