@@ -27,6 +27,7 @@ from sqlalchemy.orm import backref, mapper, relation, sessionmaker
 from datetime import datetime
 import logging as log
 import inspect
+import hashlib
 
 log.basicConfig(level=log.INFO)
 
@@ -43,11 +44,13 @@ ip adress (ip). """
    name = Column(String)
    gsm  = Column(String)
    ip = Column(String(15))
+   hashstring = Column(String(40))
 
    def __init__(self, name, gsm, ip):
       self.name = name
       self.gsm = gsm
       self.ip = ip
+      self.hashstring = hashlib.sha1(name+str(gsm)+ip+str(self.__hash__())).hexdigest()
  
    def __repr__(self):
       return "<User('%s','%s', '%s')>" % (self.name, self.gsm, self.ip)
