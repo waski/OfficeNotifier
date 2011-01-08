@@ -22,45 +22,66 @@
 
 import unittest
 from db import *
+from ping import Pinger
 import os
 
 db_file = "test.db"
 
 class DBTests(unittest.TestCase):  
 
-   @classmethod
-   def setUpClass(cls):
-      cls.dao = OfficeNotifierDAO("sqlite:///%s" % db_file)
-      cls.usr1t = ("Mr Test 1", 997, "127.0.0.1")
-      cls.usr2t = ("Mr Test 2", 998, "127.0.0.2")
-      cls.grps = ("group1", "group2") 
+    @classmethod
+    def setUpClass(cls):
+        cls.dao = OfficeNotifierDAO("sqlite:///%s" % db_file)
+        cls.usr1t = ("Mr Test 1", 997, "127.0.0.1")
+        cls.usr2t = ("Mr Test 2", 998, "127.0.0.2")
+        cls.grps = ("group1", "group2") 
       
 
-   def test_UserCreation(self):
-      """Try to add 2 records to 'users' table"""
-      self.usr1 = self.dao.addUser(self.usr1t[0], self.usr1t[1], self.usr1t[2]) 
-      self.usr2 = self.dao.addUser(self.usr2t[0], self.usr2t[1], self.usr2t[2]) 
-      self.assertTrue( isinstance(self.usr1, User) and isinstance(self.usr2,User) )
+    def test_UserCreation(self):
+        """Try to add 2 records to 'users' table"""
+        self.usr1 = self.dao.addUser(self.usr1t[0], self.usr1t[1], self.usr1t[2]) 
+        self.usr2 = self.dao.addUser(self.usr2t[0], self.usr2t[1], self.usr2t[2]) 
+        self.assertTrue( isinstance(self.usr1, User) and isinstance(self.usr2,User) )
 
-   def test_GroupCreation(self):
-      """Try to add 2 records to 'groups' table"""
-      self.grp1 = self.dao.addGroup( self.grps[0] )
-      self.grp2 = self.dao.addGroup( self.grps[1] )
-      self.assertTrue ( isinstance(self.grp1, Group) and isinstance(self.grp2, Group) )
+    def test_GroupCreation(self):
+        """Try to add 2 records to 'groups' table"""
+        self.grp1 = self.dao.addGroup( self.grps[0] )
+        self.grp2 = self.dao.addGroup( self.grps[1] )
+        self.assertTrue ( isinstance(self.grp1, Group) and isinstance(self.grp2, Group) )
 
 
-   def test_UserQuering(self):
-      """Try to query users and compare them with hardcoded ones"""
-      self.assertTrue ( self.dao.getUserById(1).name == self.usr1t[0] )
-      self.assertTrue ( self.dao.getUserById(2).name == self.usr2t[0] )
+    def test_UserQuering(self):
+        """Try to query users and compare them with hardcoded ones"""
+        self.assertTrue ( self.dao.getUserById(1).name == self.usr1t[0] )
+        self.assertTrue ( self.dao.getUserById(2).name == self.usr2t[0] )
 
-   def test_GroupQuering(self):
-      self.assertTrue( self.dao.getGroupById(1).name == self.grps[0] )
-      self.assertTrue( self.dao.getGroupById(2).name == self.grps[1] )
+    def test_GroupQuering(self):
+        self.assertTrue( self.dao.getGroupById(1).name == self.grps[0] )
+        self.assertTrue( self.dao.getGroupById(2).name == self.grps[1] )
   
-   def test_notatest_just_cleanup(self):
-      if os.path.exists(db_file):
-          os.remove(db_file)
+    def test_notatest_just_cleanup(self):
+        if os.path.exists(db_file):
+            os.remove(db_file)
+          
+class PingerTests(unittest.TestCase):  
+
+    def test_PingYourSelf(self):
+        """Try to ping the localhost"""
+        p1 = Pinger("localhost")
+        p2 = Pinger("127.0.0.1")
+        self.assertTrue( p1.ping() )
+        self.assertTrue( p2.ping() )
+      
+    def test_PingGoogle(self):
+        """Try to ping the Google.com"""
+        p = Pinger("www.google.com")
+        self.assertTrue( p.ping() )
+      
+    def test_PingUnexistingHost(self):
+        """Try to ping some unexisting host"""
+        p = Pinger("1.0.1.0")
+        self.assertFalse( p.ping() )
+    
 
 if __name__ == "__main__":
     DBTests.setUpClass()
