@@ -69,6 +69,7 @@ class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             'billings': billings,
             'membership' : membership,
             'status' : status,
+            'footer': config.footer,
         }
         raw_html = file('www/index.tmpl').read().decode('UTF-8')
         main_html = Template(raw_html).render(data)

@@ -17,5 +17,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-
+"""On this port WWW status page will be served"""
 HTTP_PORT = 8080
+
+"""Name of the main DB file"""
+DB_FILE = "notifier.db"
+
+
+
+"""Page footer content"""
+footer = """Copyright 2011 Satanowski <satanowski@gmail.com>"""

@@ -194,6 +194,7 @@
                         <td>User name</td>
                         <td>phone number</td>
                         <td>IP address</td>
+                        <td>Last ping</td>
                     </tr>
                 </thead>                
                 <tbody>
@@ -202,7 +203,8 @@
                     <td>{{user.id}}</td>
                     <td>{{user.name}}</td>
                     <td>{{user.gsm[0:3]}} &#9839;&#9839;&#9839;&nbsp;&#9839;&#9839;&#9839;</td>
-                    <td>{{user.ip[0:8]}}  &#9839;&#9839;&#9839;&#9839;&#9839;&#9839;&#9839;</td>
+                    <td>{{user.ip[0:8]}} &#9839;&#9839;&#9839;&#9839;&#9839;&#9839;&#9839;</td>
+                    <td>{{user.lastping}}</td>
                 </tr>
             {% endfor %}
                 </tbody>
@@ -234,7 +236,7 @@
         <span>Phone status:</span><span id="status_txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas laoreet suscipit nisl, et pretium dui.</span>
 </div>
 <footer>
-    Copyright 2011 Satanowski <satanowski@gmail.com>
+    {{footer}}
 </footer>
 </body>
 </html>
